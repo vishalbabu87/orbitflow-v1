@@ -1,0 +1,24 @@
+/* src/components/hero/typing.css */
+
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, var(--orbit-accent-primary), #06b6d4);
+}
+
+.blinker {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

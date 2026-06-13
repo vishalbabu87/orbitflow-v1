@@ -1,0 +1,44 @@
+# OrbitFlow Credits and Third-Party Notices
+
+OrbitFlow uses open-source libraries and external demo assets. Their original licenses and terms continue to apply.
+
+## Core Toolchain
+
+- React and React DOM (MIT) - https://react.dev/
+- React Router DOM (MIT) - https://reactrouter.com/
+- TypeScript (Apache-2.0) - https://www.typescriptlang.org/
+- Vite (MIT) - https://vite.dev/
+- Tailwind CSS (MIT) - https://tailwindcss.com/
+- PostCSS (MIT) - https://postcss.org/
+- Autoprefixer (MIT) - https://github.com/postcss/autoprefixer
+
+## UI and Animation
+
+- Framer Motion v12.x (MIT) - https://motion.dev/
+- Lenis v1.3.x (MIT) - https://github.com/darkroomengineering/lenis
+- Lucide React v0.454.x (ISC) - https://lucide.dev/
+- Radix UI primitives v1.x/v2.x (MIT) - https://www.radix-ui.com/
+- react-fast-marquee v1.6.x (MIT) - https://github.com/justin-chu/react-fast-marquee
+- Recharts v3.8.x (MIT) - https://recharts.github.io/
+
+## Utilities
+
+- class-variance-authority (Apache-2.0) - https://github.com/joe-bell/cva
+- clsx (MIT) - https://github.com/lukeed/clsx
+- tailwind-merge (MIT) - https://github.com/dcastil/tailwind-merge
+
+## Fonts
+
+- Plus Jakarta Sans (OFL-1.1) - https://fonts.google.com/specimen/Plus+Jakarta+Sans
+- JetBrains Mono (OFL-1.1) - https://fonts.google.com/specimen/JetBrains+Mono
+- Lora (OFL-1.1) - https://fonts.google.com/specimen/Lora
+
+## Demo Content and External Services
+
+- Demo imagery is completely custom and AI-generated using modern generative tools (Stable Diffusion / Midjourney). High-quality placeholder images are included in the `public/images/` directory. These assets are free of third-party copyright restrictions and are safe to use or modify.
+- The contact page includes a Google Maps embed. Review the Maps Embed API terms before production use and configure a valid production API key where required: https://developers.google.com/maps/terms
+
+## Buyer Notice
+
+Replace demo imagery, placeholder company details, legal-policy copy, canonical URLs, and external-service embeds as needed for your production project. OrbitFlow source code is distributed under the commercial terms in `LICENSE.md`.
+

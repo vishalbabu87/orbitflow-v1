@@ -1,0 +1,2851 @@
+/* ===========================================================================
+   ORBITFLOW — MOBILE DESIGN SYSTEM  (mobile.css)
+   Senior UI/UX Mobile Spec — Not auto-layout, intentional mobile design.
+
+   Import this AFTER style.css in main.tsx:
+     import './style.css'
+     import './mobile.css'
+
+   Every section is designed independently for mobile viewports.
+   Breakpoints:
+     xs  → max-width: 479px   (small phones: iPhone SE, Galaxy A)
+     sm  → max-width: 639px   (standard phones: iPhone 15, Galaxy S24)
+     md  → max-width: 767px   (large phones, small tablets)
+
+   Design philosophy:
+     - Touch targets: minimum 44×44px
+     - Text: minimum 13px (16px inputs to prevent iOS zoom)
+     - No auto-scaling — every size is intentional
+     - Horizontal scroll sections use scroll-snap
+     - Bottom nav replaces sidebar in dashboard
+     - Alternating layouts collapse: visual first, text below
+   =========================================================================== */
+
+/* ===========================================================================
+   SECTION 1 · GLOBAL MOBILE RESETS
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Prevent horizontal scroll bleed */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure tap highlight is minimal */
+  * {
+    -webkit-tap-highlight-color: rgba(14, 165, 164, 0.12);
+  }
+
+  /* Section vertical rhythm tightened for mobile */
+  section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* ── Global heading scale (mobile-first, clean hierarchy) ── */
+  .orbit-section-heading-xl,
+  h1 {
+    font-size: clamp(26px, 7.5vw, 32px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .orbit-section-heading-lg,
+  h2 {
+    font-size: clamp(20px, 5.5vw, 26px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  h3 {
+    font-size: clamp(16px, 4.5vw, 20px) !important;
+    line-height: 1.3 !important;
+  }
+
+  h4 {
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+  }
+
+  p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  .hero-section p {
+    font-size: 14px !important;
+  }
+
+
+  /* Compress desktop spacing utility classes for mobile */
+  .space-y-32 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 40px !important;
+  }
+  .space-y-24 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 28px !important;
+  }
+  .mb-20 {
+    margin-bottom: 24px !important;
+  }
+  .mb-32 {
+    margin-bottom: 40px !important;
+  }
+  .py-24 {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .py-32 {
+    padding-top: 52px !important;
+    padding-bottom: 52px !important;
+  }
+
+  /* Prevent text from touching viewport edges */
+  .mx-auto.max-w-7xl,
+  .mx-auto.max-w-6xl,
+  .mx-auto.max-w-5xl,
+  .mx-auto.max-w-4xl,
+  .mx-auto.max-w-3xl,
+  .mx-auto.max-w-2xl {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Custom utility to disable scrollbar visual indicator but keep scrolling active */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  /* Center and constrain all hero illustration mockups on mobile solution pages */
+  section > div.relative.z-10.mx-auto.grid > div:last-child,
+  section > div.relative.z-10.mx-auto.grid > div:nth-child(2) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 95% !important;
+    max-width: 480px !important;
+    transform: none !important;
+    transform-origin: top center !important;
+  }
+
+  /* Specific mockup styling for Chatbot, CRM, Mobile App, and Workflow illustrations on mobile */
+  .relative.overflow-hidden.px-6.pt-40 [class*='rounded-[2.5rem]'],
+  .relative.overflow-hidden.px-6.pt-40 [class*='rounded-3xl'],
+  .relative.overflow-hidden.px-6.pt-40 [class*='rounded-2xl'],
+  .relative.overflow-hidden.px-6.pt-40 .relative.space-y-4 {
+    padding: 12px !important;
+    border-radius: 18px !important;
+    min-height: unset !important;
+    /* Height caps and overflow: hidden removed to show full contents of illustrations */
+  }
+
+  /* Phone mockup in HomeMobileApp: scale to fit screen width */
+  .relative.w-\[300px\],
+  section div:has(> .rounded-\[3rem\]) .relative.w-\[300px\] {
+    width: 250px !important;
+    height: auto !important;
+    transform: scale(0.9) !important;
+    transform-origin: top center !important;
+  }
+
+  /* Make all CTA buttons inside page heroes and final CTAs perfectly uniform on mobile (only has a container wrapping Links) */
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-wrap,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-row,
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap,
+  .relative.overflow-hidden.px-6.pt-40 div.gap-4,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-3,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-4,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.flex-col.items-center.justify-center:has(a).gap-4 {
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
+    gap: 10px !important;
+    display: flex !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-wrap a,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-wrap button,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-row a,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.flex-row button,
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap a,
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap button,
+  .relative.overflow-hidden.px-6.pt-40 div.gap-4 a,
+  .relative.overflow-hidden.px-6.pt-40 div.gap-4 button,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-3
+    a,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-3
+    button,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-4
+    a,
+  section.relative.overflow-hidden:not(:first-of-type)
+    div.flex.items-center.justify-center:has(a).gap-4
+    button {
+    width: 100% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 48px !important;
+    padding: 0 24px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Reset button styles inside chat mockups and widgets so the send button doesn't become huge */
+  .chat-send-btn {
+    height: 38px !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Chatbot mockup mobile view layout fixing */
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[480px\] {
+    padding: 0 !important;
+    border-radius: 20px !important;
+    height: 500px !important; /* Tall enough to display whole message thread */
+    min-height: 500px !important;
+    max-height: 500px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[480px\] form {
+    padding: 8px 10px !important;
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[480px\] input {
+    font-size: 16px !important; /* Prevents auto-zoom on iOS */
+    height: 36px !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[480px\] button[type='submit'] {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Mobile app phone mockup: scaled phone frame showing full home view */
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\],
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] {
+    padding: 0 !important;
+    border-radius: 36px !important;
+    height: 580px !important; /* Shows full device screen viewport */
+    min-height: 580px !important;
+    max-height: 580px !important;
+    width: 280px !important;
+    border-width: 6px !important; /* iOS bezel border scale */
+    overflow: hidden !important;
+    background: #0d1117 !important;
+  }
+
+  /* Mobile app phone screen styling enhancements: Premium Dark Dashboard */
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] > div,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] > div {
+    background: #0d1117 !important;
+    color: #c9d1d9 !important;
+    padding: 12px !important;
+    padding-top: 24px !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] div[class*='bg-white'],
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] div[class*='bg-white'] {
+    background: #161b22 !important;
+    border-color: #30363d !important;
+    color: #c9d1d9 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] p.text-gray-900,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] p.font-extrabold,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] p.text-gray-900,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] p.font-extrabold {
+    color: #ffffff !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] p.text-gray-400,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] p.text-gray-400 {
+    color: #8b949e !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] span.text-gray-400,
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] span.text-gray-400 {
+    color: #8b949e !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] div[class*='bg-teal-50'],
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[400px\] div[class*='bg-purple-50'],
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] div[class*='bg-teal-50'],
+  .relative.overflow-hidden.px-6.pt-40 div.h-\[600px\] div[class*='bg-purple-50'] {
+    background: #21262d !important;
+    border-color: #30363d !important;
+  }
+
+  /* Center blog categories on mobile */
+  .sticky.top-\[68px\] div.flex-wrap.items-center {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* Tighten padding and corners on actual section-level content cards on mobile only.
+     Deliberately exclude: carousel visual areas, browser frames, feature deep-dive mockups */
+  section > div > .rounded-3xl,
+  section > div > div > .rounded-3xl,
+  section > .rounded-3xl {
+    border-radius: 20px !important;
+  }
+  /* Solution page hero cards - these are the large rounded containers that need tightening */
+  .relative.overflow-hidden.px-6.pt-40 .rounded-\[2\.5rem\],
+  .relative.overflow-hidden.px-6.pt-40 .rounded-3xl {
+    padding: 16px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Tighten hero vertical rhythm & center content on mobile solution pages */
+  .relative.overflow-hidden.px-6.pt-40 > div > div:first-child {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 > div > div:first-child span.mb-6,
+  .relative.overflow-hidden.px-6.pt-40 > div span.mb-5 {
+    margin-bottom: 12px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 > div > div:first-child h1,
+  .relative.overflow-hidden.px-6.pt-40 > div h1 {
+    margin-bottom: 12px !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 > div > div:first-child p,
+  .relative.overflow-hidden.px-6.pt-40 > div p {
+    margin-bottom: 20px !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    max-width: 310px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Make all CTA buttons inside page heroes perfectly uniform on mobile */
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.gap-4 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap a,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.gap-4 a,
+  .relative.overflow-hidden.px-6.pt-40 div.flex-wrap button,
+  .relative.overflow-hidden.px-6.pt-40 div.flex.gap-4 button {
+    display: flex !important;
+    width: 100% !important;
+    height: 48px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    padding: 0 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Premium button gradients & theme highlight consistency */
+  .relative.overflow-hidden.px-6.pt-40 a[class*='bg-\[var\(--orbit-accent-primary\)\]'],
+  .relative.overflow-hidden.px-6.pt-40 button[class*='bg-\[var\(--orbit-accent-primary\)\]'] {
+    background: linear-gradient(135deg, var(--orbit-accent-primary) 0%, #06b6d4 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 20px rgba(14, 165, 164, 0.3) !important;
+    transition: all 0.2s ease !important;
+  }
+  .relative.overflow-hidden.px-6.pt-40 a[class*='bg-\[var\(--orbit-accent-primary\)\]']:active,
+  .relative.overflow-hidden.px-6.pt-40
+    button[class*='bg-\[var\(--orbit-accent-primary\)\]']:active {
+    transform: scale(0.96) !important;
+    opacity: 0.9 !important;
+  }
+
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-200'],
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-800'],
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-\[var\(--orbit-border-subtle\)\]'] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--orbit-border-subtle) !important;
+    color: var(--orbit-text-primary) !important;
+    transition: all 0.2s ease !important;
+  }
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-200']:active,
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-800']:active,
+  .relative.overflow-hidden.px-6.pt-40 a[class*='border-\[var\(--orbit-border-subtle\)\]']:active {
+    transform: scale(0.96) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .dark .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-200'],
+  .dark .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-800'] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+  }
+  .dark .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-200']:active,
+  .dark .relative.overflow-hidden.px-6.pt-40 a[class*='border-gray-800']:active {
+    transform: scale(0.96) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Spacing for illustrations below the copy on mobile */
+  .relative.overflow-hidden.px-6.pt-40 > div > div:nth-child(2),
+  .relative.overflow-hidden.px-6.pt-40 > div > div:nth-child(3),
+  .relative.overflow-hidden.px-6.pt-40 > div > div > div:nth-child(2) {
+    margin-top: 28px !important;
+  }
+
+  /* Tighten section header container margins */
+  section div.mb-16,
+  section div.mb-12 {
+    margin-bottom: 24px !important;
+  }
+
+  section div.mb-16 span.mb-3,
+  section div.mb-12 span.mb-3 {
+    margin-bottom: 6px !important;
+  }
+
+  /* In mobile view light mode, force only pure white background for all pages, sections, and footers (excluding inner mockup components and hero) */
+  html:not(.dark) body,
+  html:not(.dark) section:not(.hero-section),
+  html:not(.dark) footer {
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+
+  html:not(.dark) section.hero-section {
+    background-color: #0b0f19 !important;
+    color: #ffffff !important;
+  }
+
+  html:not(.dark) section.hero-section p {
+    color: #94a3b8 !important;
+  }
+
+  html:not(.dark) section.hero-section h1 {
+    color: #ffffff !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 2 · NAVBAR — MOBILE MENU
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Navbar height: 60px on mobile — tight and clean */
+  nav.fixed.top-0 {
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
+
+  /* Navbar inner container - tight horizontal padding */
+  nav.fixed.top-0 > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
+
+  /* Logo: tight sizing */
+  nav.fixed.top-0 a[aria-label='OrbitFlow Home'] {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Mobile: theme toggle + hamburger touch targets */
+  nav .md\:hidden button {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  /* Push subpages and solutions page heroes down on mobile to clear the fixed header navigation - tighter to fit in one view */
+  .relative.overflow-hidden.px-6.pt-40 {
+    padding-top: 100px !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* Mobile drawer overrides */
+  .mobile-drawer {
+    background: var(--orbit-base) !important;
+    border-right: 1px solid var(--orbit-border-subtle) !important;
+    width: 290px !important;
+    max-width: 85vw !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* Drawer inner scroll container */
+  .mobile-drawer-content {
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* Main drawer buttons */
+  .mobile-drawer-btn {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    color: var(--orbit-text-secondary) !important;
+    padding: 10px 0 !important;
+    text-transform: uppercase !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    transition: color 0.2s ease !important;
+  }
+
+  .mobile-drawer-btn:active {
+    color: var(--orbit-accent-primary) !important;
+  }
+
+  /* Solutions and Pages sub-navigation link containers */
+  .mobile-drawer-sublink-container {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-left: 2px solid var(--orbit-border-subtle) !important;
+    margin: 4px 0 8px 6px !important;
+    padding: 8px 0 8px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    max-height: unset !important;
+  }
+
+  .dark .mobile-drawer-sublink-container {
+    background: rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Sub-page links inside solutions/pages */
+  .mobile-drawer-sublink {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--orbit-text-secondary) !important;
+    text-align: left !important;
+    width: 100% !important;
+    padding: 4px 0 !important;
+    display: block !important;
+    opacity: 0.85 !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .mobile-drawer-sublink:active {
+    color: var(--orbit-accent-primary) !important;
+    opacity: 1 !important;
+    transform: translateX(4px) !important;
+  }
+
+  /* Footer container inside drawer */
+  .mobile-drawer-footer {
+    padding: 20px !important;
+    border-top: 1px solid var(--orbit-border-subtle) !important;
+    background: var(--orbit-base) !important;
+    gap: 12px !important;
+  }
+
+  .mobile-drawer-footer a {
+    height: 48px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.1em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 3 · HERO — FULL REDESIGN FOR MOBILE
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Hero container: use short viewport height to avoid address bar clipping */
+  section.relative.flex.min-h-screen:first-of-type,
+  [class*='hero']:not(.hero-noise):not(.hero-bottom-divider) {
+    min-height: 100svh;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Hero main title — tight, readable scale on mobile */
+  .hero-heading,
+  section h1.font-sans,
+  section h1.font-display {
+    font-size: clamp(28px, 8.5vw, 38px) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.04em !important;
+    /* No forced min-height — let natural flow work */
+    min-height: unset !important;
+  }
+
+  /* Hero typing animation text — match h1 scale */
+  .hero-typing-text {
+    font-size: clamp(26px, 7.5vw, 34px) !important;
+  }
+
+  /* Hero subline: gradient phrase */
+  section h1 .gradient-text {
+    display: block;
+    font-size: clamp(24px, 7vw, 32px) !important;
+  }
+
+  /* Hero body paragraph */
+  section > div > div > p.text-gray-400,
+  section > div > div > p.text-white\/60 {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    max-width: 290px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Badge pill above hero heading */
+  section .inline-flex.items-center.gap-2.rounded-full {
+    font-size: 9.5px !important;
+    padding: 5px 11px !important;
+    letter-spacing: 0.14em !important;
+    white-space: nowrap !important;
+  }
+
+  /* BrowserFrame sub-label */
+  section#feature-deep-dive .mt-3.flex.items-center.justify-center.gap-3.text-\[10px\] {
+    font-size: 10px !important;
+  }
+
+  /* Hero CTA buttons — full width row on mobile (side by side) */
+  .hero-cta-buttons {
+    flex-direction: row !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 0 !important;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .hero-cta-buttons a,
+  .hero-cta-buttons button {
+    flex: 1 !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    padding: 0 12px !important;
+  }
+
+  /* Star rating social proof row */
+  section .flex.items-center.gap-1 svg.h-4 {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Hero bottom card reveal divider */
+  .hero-bottom-divider {
+    height: 36px !important;
+    border-radius: 20px 20px 0 0 !important;
+  }
+
+  /* Fin panels: fewer on mobile for performance */
+  section .aurora-glow {
+    width: 240px !important;
+    height: 240px !important;
+    filter: blur(40px) !important;
+  }
+
+  /* Hero section top padding: account for 60px navbar */
+  section.hero-section {
+    padding-top: 72px !important;
+  }
+
+  /* Hero inner layout: reduce spacing between elements */
+  section > .mx-auto.max-w-7xl > div {
+    gap: 16px !important;
+  }
+}
+
+/* Extra small phones (SE, older Android) */
+@media (max-width: 390px) {
+  section h1.font-sans,
+  .hero-heading {
+    font-size: 26px !important;
+  }
+  section h1 .gradient-text {
+    font-size: 24px !important;
+  }
+  .hero-cta-buttons a,
+  .hero-cta-buttons button {
+    font-size: 10px !important;
+    height: 42px !important;
+    padding: 0 8px !important;
+    letter-spacing: 0.06em !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 4 · LOGO MARQUEE (in Hero)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Reduce marquee height */
+  section.relative.w-full.overflow-hidden.bg-transparent.py-1 {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Marquee item spacing and text size */
+  section .group.flex.cursor-pointer.items-center.px-12 {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  section .group.flex.cursor-pointer span.text-\[14px\] {
+    font-size: 12px !important;
+  }
+
+  section .group.flex.cursor-pointer svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 5 · DASHBOARD SHOWCASE (Marketing Section)
+   Design decision: Scale down the full dashboard into a browser-mockup preview.
+   On mobile we show a smaller cropped/scaled mockup with the key stats visible.
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Section itself */
+  section.relative.overflow-hidden.bg-white.py-24:has(.dark.text-gray-150) {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  /* Section header - Dashboard Showcase label */
+  section .mb-16.max-w-2xl h2 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+
+  section .mb-16.max-w-2xl p {
+    font-size: 13px !important;
+  }
+
+  section .mb-16.max-w-2xl {
+    margin-bottom: 28px !important;
+  }
+
+  /* The dark dashboard mockup container */
+  .dashboard-mockup,
+  div[style*="maxWidth: '1200px'"] {
+    margin: 0 -20px !important; /* Bleed to viewport edges */
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  /* Scale the entire dashboard inner content to fit mobile width */
+  .dark.text-gray-150.relative.z-10.flex {
+    height: 320px !important;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hide the mock sidebar inside the showcase — too narrow on mobile */
+  .dark.text-gray-150 aside.w-56 {
+    display: none !important;
+  }
+
+  /* The main content area of the mockup takes full width */
+  .dark.text-gray-150 > div:last-child {
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  /* Scale the inner content down to look like a miniature dashboard */
+  .dark.text-gray-150 > div:last-child > * {
+    transform: scale(0.72);
+    transform-origin: top left;
+    width: 139% !important;
+  }
+
+  /* Mockup top glow border: thinner on mobile */
+  div[style*="background: 'linear-gradient(90deg, transparent 0%"] {
+    height: 1.5px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 6 · PRODUCT CAROUSEL (Showcase Cards)
+   Design: horizontal scroll snap, 285px × 340px cards, dots navigation
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Section header */
+  section:has(.carousel-card) .text-4xl,
+  section:has(.carousel-card) .md\:text-\[52px\],
+  section:has(.carousel-card) h2 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+
+  section:has(.carousel-card) p.text-sm,
+  section:has(.carousel-card) p.text-base,
+  section:has(.carousel-card) p.md\:text-base {
+    font-size: 15px !important;
+  }
+
+  /* Tab pills: horizontal scroll, no wrap */
+  section:has(.carousel-card) .flex.gap-2:not(.carousel-dots) {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 6px !important;
+    scroll-snap-type: x mandatory;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    gap: 8px !important;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
+  section:has(.carousel-card) .flex.gap-2:not(.carousel-dots)::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Each tab pill */
+  section:has(.carousel-card) button[class*='rounded-xl'] {
+    flex-shrink: 0 !important;
+    font-size: 10px !important;
+    padding: 7px 14px !important;
+    white-space: nowrap !important;
+    height: 32px !important;
+  }
+
+  /* Carousel track: JS-animation based (framer-motion), NOT a scroll container.
+     Cards are absolutely positioned — overflow-x/scroll-snap must NOT be applied.
+     Enable GPU compositing for smooth framer-motion animation. */
+  section#showcase .relative.overflow-hidden {
+    -webkit-overflow-scrolling: auto;
+  }
+
+  /* Promote carousel cards to GPU layer for smooth animation */
+  .carousel-card {
+    border-radius: 20px !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Card visual area (top image/illustration part) */
+  .carousel-card > div:first-child {
+    height: auto !important;
+  }
+
+  /* Card content area */
+  .carousel-card > div:last-child {
+    padding: 16px !important;
+  }
+
+  /* Card title */
+  .carousel-card h3 {
+    font-size: 15px !important;
+  }
+
+  /* Card description */
+  .carousel-card p {
+    font-size: 13.5px !important;
+    line-height: 1.55 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Arrow buttons: show on mobile just like desktop */
+  section:has(.carousel-card) button:has(svg) {
+    display: flex !important;
+    width: 40px !important;
+    height: 40px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 7 · FEATURE DEEP DIVE — ALTERNATING LEFT/RIGHT CARDS
+   Design: Remove alternating. Stack all vertically: visual first, text below.
+   No content breaks inside cards.
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Feature deep dive section */
+  section#feature-deep-dive,
+  section#feature-deep-dive {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  /* Ensure all feature deep dive browser frames have the exact same size on mobile */
+  section#feature-deep-dive [class*='aspect-'] {
+    aspect-ratio: 4 / 3.4 !important;
+    height: 290px !important;
+    min-height: 290px !important;
+    max-height: 290px !important;
+  }
+
+  /* Section badge */
+  section#feature-deep-dive .inline-flex.items-center.gap-2.rounded-full {
+    font-size: 9px !important;
+  }
+
+  /* Section title */
+  section#feature-deep-dive h2 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Each feature row: force single column, visual first */
+  section.relative > .mx-auto > div > div.grid,
+  /* The alternating grid container */
+  div.grid.grid-cols-1.items-center.gap-16 {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    direction: ltr !important; /* Cancel any rtl alternating trick */
+  }
+
+  /* The visual mockup block — always show first */
+  div.grid.grid-cols-1.items-center > div:has([class*='mockup']),
+  div.grid.grid-cols-1.items-center > div:has([class*='Visual']) {
+    order: -1 !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    height: 280px !important;
+    min-height: 280px !important;
+    max-height: 280px !important;
+  }
+
+  /* Feature text content block */
+  div.grid.grid-cols-1.items-center > div:has(h3) {
+    order: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Feature badge chip */
+  div.grid.grid-cols-1.items-center div.inline-flex.items-center.gap-2 {
+    font-size: 9px !important;
+    letter-spacing: 0.12em !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Feature title h3 */
+  div.grid.grid-cols-1.items-center h3 {
+    font-size: clamp(20px, 5vw, 24px) !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Feature body text — keep readable, not giant */
+  div.grid.grid-cols-1.items-center p {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  /* Feature bullet/checkmark list */
+  div.grid.grid-cols-1.items-center ul li,
+  div.grid.grid-cols-1.items-center div[class*='space-y'] > div {
+    font-size: 13.5px !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid var(--orbit-border-subtle);
+  }
+
+  div.grid.grid-cols-1.items-center ul li:last-child,
+  div.grid.grid-cols-1.items-center div[class*='space-y'] > div:last-child {
+    border-bottom: none;
+  }
+
+  /* Feature link/CTA button */
+  div.grid.grid-cols-1.items-center a.inline-flex.items-center.gap-2 {
+    font-size: 12px !important;
+    padding: 10px 0 !important;
+    height: auto !important;
+  }
+
+  /* Divider between feature rows */
+  div.grid.grid-cols-1.items-center ~ div.h-px {
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 8 · HOW IT WORKS — 3 STEPS VERTICAL STACK
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Section heading — scale with hierarchy, not too big */
+  section:has(.step-visual) h2,
+  section#how-it-works h2 {
+    font-size: clamp(22px, 6vw, 28px) !important;
+    line-height: 1.2 !important;
+  }
+
+  section:has(.step-visual) p.text-sm,
+  section#how-it-works p.text-sm {
+    font-size: 13px !important;
+  }
+
+  /* Steps container: single column */
+  section#how-it-works .grid,
+  section:has(.step-visual) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Individual step card */
+  section#how-it-works .grid > div,
+  section:has(.step-visual) .grid > div {
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Step number badge */
+  section#how-it-works .grid > div > div:first-child,
+  section:has(.step-visual) .grid > div > span.text-xs {
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Step visual illustration area */
+  section#how-it-works .grid > div [class*='h-32'],
+  section#how-it-works .grid > div [class*='h-36'] {
+    height: 140px !important;
+    border-radius: 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Step title */
+  section#how-it-works .grid > div h3 {
+    line-height: 1.25 !important;
+    letter-spacing: -0.015em !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Step body */
+  section#how-it-works .grid > div p {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Connector between steps: hide desktop horizontal arrows */
+  section#how-it-works svg[class*='hidden md:block'],
+  section#how-it-works .hidden.md\:block {
+    display: none !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 9 · STATS SECTION — 2×2 GRID
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Grid layout for stats section on mobile */
+  .stats-section .grid,
+  section:has([class*='StatsSection']) .grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 36px 16px !important;
+  }
+
+  /* Stat counter number */
+  .stats-section .stat-counter {
+    font-size: 36px !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+  }
+
+  /* Stat suffix (+ or %) */
+  .stats-section .stat-counter span {
+    font-size: 20px !important;
+  }
+
+  /* Stat label */
+  .stats-section .stat-label {
+    font-size: 11px !important;
+    letter-spacing: 0.12em !important;
+    max-width: 130px !important;
+    color: var(--orbit-text-secondary) !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Section padding */
+  .stats-section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 10 · FEATURES SECTION (Bento Cards)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Section headers */
+  section#features h2,
+  section#benefits h2 {
+    font-size: 48px !important;
+    line-height: 1.2 !important;
+  }
+
+  section#features .mb-16,
+  section#benefits .mb-16 {
+    margin-bottom: 32px !important;
+  }
+
+  /* Bento grid: single column on mobile */
+  section#features,
+  section#features .mx-auto {
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  section#features .grid,
+  section:has([class*='BentoFeatures']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 4px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  section#benefits .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Individual bento card */
+  section#features .grid > div,
+  section:has([class*='BentoFeatures']) .grid > div {
+    min-height: 160px !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+  section#benefits .grid > div {
+    min-height: 120px !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Override any col-span classes on mobile */
+  section:has([class*='BentoFeatures']) .col-span-2,
+  section:has([class*='BentoFeatures']) .col-span-3 {
+    grid-column: span 1 !important;
+  }
+
+  /* Feature icon */
+  section#features .grid svg,
+  section#features .grid .h-10.w-10 {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Feature title */
+  section#features .grid h3 {
+    font-size: 26px !important;
+    margin-bottom: 8px !important;
+    line-height: 1.25 !important;
+  }
+  /* Benefits title for 2-column layout */
+  section#benefits .grid h3 {
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Feature body text */
+  section#features .grid p {
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+  }
+  /* Benefits body text for 2-column layout */
+  section#benefits .grid p {
+    font-size: 13.5px !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 11 · TESTIMONIALS
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section:has([class*='Testimonials']) {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  /* Section heading */
+  section:has([class*='Testimonials']) h2 {
+    font-size: 26px !important;
+  }
+
+  /* Testimonial cards container: horizontal scroll snap */
+  section:has([class*='Testimonials']) .flex.gap-6:has(.elite-card) {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 16px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+  }
+
+  section:has([class*='Testimonials']) .flex.gap-6:has(.elite-card)::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Individual testimonial card */
+  section:has([class*='Testimonials']) .elite-card {
+    flex-shrink: 0 !important;
+    width: 85vw !important;
+    max-width: 320px !important;
+    scroll-snap-align: start !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+  }
+
+  /* Star rating in testimonial */
+  section:has([class*='Testimonials']) .flex.items-center.gap-1 svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Quote text */
+  section:has([class*='Testimonials']) p.text-sm,
+  section:has([class*='Testimonials']) blockquote {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Name and role */
+  section:has([class*='Testimonials']) p.font-bold {
+    font-size: 13px !important;
+  }
+
+  section:has([class*='Testimonials']) p.text-xs {
+    font-size: 11px !important;
+  }
+
+  /* Avatar */
+  section:has([class*='Testimonials']) img.rounded-full {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 12 · INTEGRATIONS SECTION
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section:has([class*='IntegrationsSection']) h2 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Integration logos grid: 3 columns */
+  section:has([class*='IntegrationsSection']) .grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Each integration tile */
+  section:has([class*='IntegrationsSection']) .grid > div,
+  section:has([class*='IntegrationsSection']) .grid > a {
+    padding: 14px 8px !important;
+    border-radius: 14px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-align: center !important;
+  }
+
+  /* Integration icon */
+  section:has([class*='IntegrationsSection']) .grid svg,
+  section:has([class*='IntegrationsSection']) .grid .h-8 {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* Integration name */
+  section:has([class*='IntegrationsSection']) .grid p,
+  section:has([class*='IntegrationsSection']) .grid span {
+    font-size: 10px !important;
+    letter-spacing: 0 !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 13 · PRICING
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section:has([class*='Pricing']):not([class*='dashboard']) h2 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Toggle: stays centered */
+  section:has([class*='Pricing']) .inline-flex.rounded-full {
+    font-size: 11px !important;
+    height: 36px !important;
+  }
+
+  /* Pricing plans: single column */
+  section:has([class*='Pricing']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Pricing card */
+  section:has([class*='Pricing']) .grid > div {
+    border-radius: 22px !important;
+    padding: 24px 20px !important;
+  }
+
+  /* Plan name */
+  section:has([class*='Pricing']) .grid > div h3 {
+    font-size: 14px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  /* Plan price */
+  section:has([class*='Pricing']) .grid > div .text-4xl,
+  section:has([class*='Pricing']) .grid > div .text-5xl {
+    font-size: 36px !important;
+  }
+
+  /* Plan period */
+  section:has([class*='Pricing']) .grid > div .text-gray-400 {
+    font-size: 12px !important;
+  }
+
+  /* Feature list items */
+  section:has([class*='Pricing']) .grid > div li,
+  section:has([class*='Pricing']) .grid > div .flex.items-center.gap-3 {
+    font-size: 13px !important;
+  }
+
+  /* CTA button */
+  section:has([class*='Pricing']) .grid > div a,
+  section:has([class*='Pricing']) .grid > div button {
+    height: 48px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 14 · FAQ ACCORDION
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section#faq h2 {
+    font-size: 48px !important;
+  }
+
+  /* Accordion items */
+  section#faq [class*='border-b'] {
+    padding: 16px 0 !important;
+  }
+
+  /* Question text */
+  section#faq button span,
+  section#faq [role='button'] {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.01em !important;
+    text-align: left !important;
+  }
+
+  /* Answer text */
+  section#faq [class*='answer'],
+  section#faq p.text-sm {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Toggle icon */
+  section#faq svg.h-4.w-4 {
+    flex-shrink: 0 !important;
+    margin-left: 12px !important;
+  }
+  /* Explicit direct element styling for feature deep dive and how it works step cards */
+  section#feature-deep-dive span.feature-deep-dive-card-label {
+    font-size: 18px !important;
+  }
+
+  section#how-it-works .grid > div span.font-mono {
+    font-size: 18px !important;
+  }
+
+  section#how-it-works .grid > div h3 {
+    font-size: 28px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 15 · CONTACT SECTION
+   Input sizing 16px+ prevents iOS zoom on focus.
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section#contact {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  /* Contact grid: single column */
+  section#contact .grid.grid-cols-1.lg\:grid-cols-12 {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Left info column */
+  section#contact .lg\:col-span-5 {
+    grid-column: span 1 !important;
+  }
+
+  /* Section heading */
+  section#contact h2 {
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  section#contact p.text-sm,
+  section#contact p.md\:text-base {
+    font-size: 13.5px !important;
+    line-height: 1.65 !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Contact info items */
+  section#contact .space-y-6 > div {
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  section#contact .space-y-6 > div > div:first-child {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  section#contact .space-y-6 p.font-mono {
+    font-size: 9px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  section#contact .space-y-6 p.font-bold {
+    font-size: 13px !important;
+  }
+
+  /* Form card */
+  section#contact .elite-card {
+    padding: 24px 20px !important;
+    border-radius: 24px !important;
+  }
+
+  /* Form inputs: 16px to prevent iOS zoom */
+  section#contact input[type='text'],
+  section#contact input[type='email'],
+  section#contact textarea,
+  section#contact select {
+    font-size: 16px !important;
+    height: 52px !important;
+    padding: 0 16px !important;
+    border-radius: 12px !important;
+    background: var(--orbit-surface) !important;
+    border: 1px solid var(--orbit-border-subtle) !important;
+    color: var(--orbit-text-primary) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  section#contact input[type='text']::placeholder,
+  section#contact input[type='email']::placeholder,
+  section#contact textarea::placeholder {
+    color: var(--orbit-text-muted) !important;
+    opacity: 0.8 !important;
+  }
+
+  section#contact input[type='text']:focus,
+  section#contact input[type='email']:focus,
+  section#contact textarea:focus {
+    border-color: var(--orbit-accent-primary) !important;
+    background: var(--orbit-base) !important;
+    box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.15) !important;
+  }
+
+  section#contact textarea {
+    height: 120px !important;
+    padding: 14px 16px !important;
+    resize: none !important;
+  }
+
+  /* Form labels */
+  section#contact label {
+    font-size: 11px !important;
+    letter-spacing: 0.08em !important;
+    margin-bottom: 6px !important;
+    color: var(--orbit-text-secondary) !important;
+    font-weight: 600 !important;
+  }
+
+  /* Form grid: single column */
+  section#contact .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Submit button: full width */
+  section#contact button[type='submit'] {
+    width: 100% !important;
+    height: 52px !important;
+    font-size: 12px !important;
+    border-radius: 14px !important;
+    letter-spacing: 0.1em !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 16 · FINAL CTA SECTION
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  section:has([class*='FinalCTA']) {
+    padding: 48px 20px !important;
+  }
+
+  section:has([class*='FinalCTA']) h2 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  section:has([class*='FinalCTA']) p {
+    font-size: 13px !important;
+  }
+
+  section:has([class*='FinalCTA']) .flex.gap-4 {
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    margin: 0 auto !important;
+  }
+
+  section:has([class*='FinalCTA']) .flex.gap-4 a {
+    width: 100% !important;
+    height: 52px !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 17 · FOOTER
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  footer {
+    padding-top: 64px !important;
+    padding-bottom: 80px !important; /* Extra bottom space for fixed nav if any */
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Footer grid: single column */
+  footer .grid.grid-cols-2.gap-10 {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+    margin-bottom: 36px !important;
+  }
+
+  /* Brand block: centered on mobile */
+  footer .lg\:col-span-2 {
+    text-align: center !important;
+  }
+
+  footer .lg\:col-span-2 .flex.items-center.gap-4 {
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+
+  footer .footer-logo-container {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 12px !important;
+  }
+
+  footer .lg\:col-span-2 p.text-sm {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+    margin: 0 auto 16px !important;
+    max-width: 280px !important;
+  }
+
+  /* Footer link columns: 2-column grid */
+  footer .grid.grid-cols-1.md\:grid-cols-3:last-of-type {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px 20px !important;
+  }
+
+  /* Link column headings */
+  footer h4 {
+    font-size: 9px !important;
+    letter-spacing: 0.2em !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Footer links */
+  footer ul.space-y-4 li {
+    margin-bottom: 0 !important;
+  }
+
+  footer ul.space-y-4 {
+    gap: 0 !important;
+  }
+
+  footer ul.space-y-4 a,
+  footer ul.space-y-3 a {
+    font-size: 13px !important;
+    padding: 7px 0 !important;
+    display: block !important;
+    min-height: 36px !important;
+  }
+
+  /* Newsletter block */
+  footer .footer-newsletter-card {
+    grid-column: span 2 !important; /* Ensure it spans full width on mobile */
+    width: 100% !important;
+    margin-top: 24px !important;
+  }
+
+  footer .footer-newsletter-card .relative {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 24px !important;
+  }
+
+  footer .footer-newsletter-card h4 {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+  }
+
+  footer .footer-newsletter-card p {
+    font-size: 13px !important;
+    margin-bottom: 16px !important;
+    text-align: left !important;
+  }
+
+  footer .footer-newsletter-card input {
+    font-size: 14px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  footer .footer-newsletter-card button {
+    height: 44px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+  }
+
+  /* Footer divider */
+  footer .border-t {
+    margin-top: 32px !important;
+    padding-top: 20px !important;
+  }
+
+  /* Bottom bar: stack copyright + links */
+  footer .flex.items-center.justify-between.border-t {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+
+  footer p.text-xs {
+    font-size: 11px !important;
+    color: var(--orbit-text-muted) !important;
+  }
+
+  /* Scroll-to-top button: raise above any fixed bottom nav */
+  button[aria-label*='scroll'],
+  button[aria-label*='top'],
+  .scroll-top-btn {
+    bottom: 80px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 18 · SOLUTION PAGES (HomeChatbot, HomeCRM, etc.)
+   All hero sections on solution pages
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Solution page hero sections */
+  [class*='HomeChatbot'],
+  [class*='HomeCRM'],
+  [class*='HomeWorkflow'],
+  [class*='HomeAgency'],
+  [class*='HomeAnalyticsPlatform'],
+  [class*='HomeMobileApp'],
+  [class*='HomeProjectManagement'] {
+    /* Handled by global section rules above */
+  }
+
+  /* Phone mockup in HomeMobileApp: scale to fit */
+  .relative.w-\[300px\] {
+    width: 240px !important;
+    transform: scale(0.85) !important;
+    transform-origin: top center !important;
+  }
+
+  /* Cube / 3D unfold section */
+  section:has([class*='CubeUnfold']) {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  section:has([class*='CubeUnfold']) h2 {
+    font-size: 24px !important;
+  }
+
+  /* Feature fan-out cards: single column */
+  section:has([class*='FeatureFanOut']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  section:has([class*='FeatureFanOut']) .grid > div {
+    padding: 20px !important;
+    border-radius: 18px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 19 · INNER PAGES — About, Blog, Careers, Team, etc.
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* About page */
+  section:has([class*='About']) h1,
+  section:has([class*='About']) h2 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Blog page: 1-col grid */
+  section:has([class*='Blog']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Blog card */
+  section:has([class*='Blog']) .grid > div {
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  /* BlogPost: reduce heading */
+  article h1 {
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+  }
+
+  article p {
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+  }
+
+  /* Careers: single column */
+  section:has([class*='Careers']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Team grid: 2-column */
+  section:has([class*='Team']) .grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Developers page code blocks */
+  section:has([class*='Developers']) pre {
+    font-size: 12px !important;
+    overflow-x: auto !important;
+    border-radius: 14px !important;
+  }
+
+  /* Schedule demo form */
+  section:has([class*='ScheduleDemo']) .grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  section:has([class*='ScheduleDemo']) input,
+  section:has([class*='ScheduleDemo']) select,
+  section:has([class*='ScheduleDemo']) textarea {
+    font-size: 16px !important;
+    height: 52px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 20 · AUTH PAGES — Login, Register, ForgotPassword, ResetPassword
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Auth page layout: single column, no split */
+  [class*='Login'],
+  [class*='Register'],
+  [class*='ForgotPassword'],
+  [class*='ResetPassword'] {
+    min-height: 100svh !important;
+    padding: 20px !important;
+  }
+
+  /* Hide decorative left panel on mobile */
+  .hidden.lg\:flex,
+  .hidden.md\:flex {
+    display: none !important;
+  }
+
+  /* Auth card: full width */
+  .auth-card,
+  div:has(> form) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 28px 20px !important;
+    border-radius: 24px !important;
+  }
+
+  /* Auth heading */
+  div:has(> form) h1,
+  div:has(> form) h2 {
+    font-size: 22px !important;
+    text-align: center !important;
+  }
+
+  div:has(> form) p {
+    font-size: 13px !important;
+    text-align: center !important;
+  }
+
+  /* Auth inputs: 16px to prevent iOS zoom */
+  div:has(> form) input[type='text'],
+  div:has(> form) input[type='email'],
+  div:has(> form) input[type='password'] {
+    font-size: 16px !important;
+    height: 52px !important;
+    border-radius: 12px !important;
+    padding: 0 16px !important;
+  }
+
+  /* Auth labels */
+  div:has(> form) label {
+    font-size: 11px !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  /* Auth submit button */
+  div:has(> form) button[type='submit'] {
+    height: 52px !important;
+    font-size: 12px !important;
+    border-radius: 14px !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  /* Social login buttons */
+  div:has(> form) button:not([type='submit']):has(svg) {
+    height: 48px !important;
+    border-radius: 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* OrbitLogo in auth */
+  div:has(> form) + div a,
+  div:has(> form) ~ a {
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 24px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 21 · DASHBOARD APP SHELL — MOBILE NAVIGATION
+   Design: Bottom tab bar with 5 key items replaces the sidebar drawer nav.
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Mobile header: compact 52px height */
+  header.sticky.top-0.lg\:hidden {
+    height: 52px !important;
+    padding: 0 12px !important;
+  }
+
+  header.sticky.top-0.lg\:hidden button:first-child {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Theme toggle in header */
+  header.sticky.top-0.lg\:hidden .flex.items-center.gap-2 button {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Avatar chip in header */
+  header.sticky.top-0.lg\:hidden .h-8.w-8 {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+  }
+
+  /* Main content: no bottom nav, standard padding */
+  .dashboard-layout main#main-content {
+    padding: 8px 0 24px !important;
+  }
+
+  /* Dashboard mobile drawer sidebar: refine */
+  .fixed.inset-0.z-\[250\] .w-64 {
+    width: 80vw !important;
+    max-width: 300px !important;
+  }
+
+  /* Drawer header */
+  .fixed.inset-0.z-\[250\] .h-16 {
+    height: 56px !important;
+    padding: 0 16px !important;
+  }
+
+  /* Drawer nav items */
+  .fixed.inset-0.z-\[250\] nav a {
+    height: 44px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.1em !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Drawer footer */
+  .fixed.inset-0.z-\[250\] .border-t.bg-gray-50\/50 {
+    padding: 14px 16px !important;
+  }
+}
+
+/* Bottom nav removed — navigation is via sidebar drawer only */
+/* The hamburger menu in the AppShell header opens the sidebar on mobile */
+
+/* ===========================================================================
+   SECTION 22 · DASHBOARD — KPI CARDS
+   Design: 2×2 grid, tighter cards, legible numbers
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* KPI grid: 2 columns */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* KPI card */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div {
+    height: 108px !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+  }
+
+  /* KPI label */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div span.font-mono {
+    font-size: 8.5px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* KPI trend badge */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div span.rounded-md {
+    font-size: 8.5px !important;
+    padding: 2px 6px !important;
+  }
+
+  /* KPI value number */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div .text-3xl {
+    font-size: 20px !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* KPI suffix label */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div p.font-mono {
+    font-size: 8.5px !important;
+    margin-top: 2px !important;
+  }
+
+  /* KPI sparkline: smaller */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div .h-10.w-20 {
+    height: 30px !important;
+    width: 48px !important;
+  }
+
+  /* KPI live ping indicator */
+  .grid.grid-cols-1.gap-6.sm\:grid-cols-2.lg\:grid-cols-4 > div .animate-ping {
+    width: 5px !important;
+    height: 5px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 23 · DASHBOARD — CHARTS
+   Design: full width, reduced height, touch scrollable
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Charts container: single column */
+  section:has([class*='DashboardCharts']) .grid,
+  div:has([class*='DashboardCharts']) .grid,
+  div:has(.recharts-responsive-container) ~ div .grid,
+  div.grid:has(.recharts-responsive-container) {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Chart heading */
+  div:has(.recharts-responsive-container) h3,
+  div:has(.recharts-responsive-container) p.font-semibold {
+    font-size: 13px !important;
+  }
+
+  /* Chart itself: reduce height for mobile */
+  .recharts-responsive-container {
+    height: 180px !important;
+  }
+
+  .recharts-responsive-container > div {
+    height: 180px !important;
+  }
+
+  /* Recharts tooltip */
+  .recharts-tooltip-wrapper {
+    font-size: 11px !important;
+  }
+
+  /* Legend */
+  .recharts-legend-wrapper {
+    font-size: 10px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 24 · DASHBOARD — TABLES
+   Design: horizontal scroll, sticky first column, condensed rows
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Table wrapper: enable horizontal scroll */
+  div:has(> table),
+  [class*='TableBase'],
+  [class*='ActivityTable'],
+  [class*='RiskTable'] {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 16px !important;
+  }
+
+  /* Table min-width: don't collapse columns */
+  table {
+    min-width: 560px !important;
+  }
+
+  /* Table header row */
+  thead th {
+    font-size: 9.5px !important;
+    letter-spacing: 0.1em !important;
+    padding: 10px 12px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Table data rows */
+  tbody td {
+    font-size: 12px !important;
+    padding: 10px 12px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Status badges in table */
+  tbody td span[class*='rounded'] {
+    font-size: 9.5px !important;
+    padding: 2px 7px !important;
+  }
+
+  /* Table filter row */
+  div:has(> table) .flex.items-center.gap-3 {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  div:has(> table) .flex.items-center.gap-3 input {
+    font-size: 14px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+  }
+
+  div:has(> table) .flex.items-center.gap-3 select {
+    font-size: 13px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Pagination */
+  div:has(> table) .flex.items-center.justify-between:last-child {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 25 · DASHBOARD — WIDGETS (Live Feed, Assistant, etc.)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Widgets grid: single column */
+  div:has([class*='DashboardWidgets']) .grid,
+  div:has([class*='DashboardLiveFeed']) ~ .grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Widget card */
+  [class*='DashboardWidgets'] > div,
+  [class*='DashboardLiveFeed'] {
+    border-radius: 16px !important;
+    padding: 16px !important;
+  }
+
+  /* Widget title */
+  [class*='DashboardWidgets'] h3,
+  [class*='DashboardLiveFeed'] h3 {
+    font-size: 13px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* Live feed log lines */
+  [class*='DashboardLiveFeed'] [class*='font-mono'] {
+    font-size: 10.5px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Assistant chat */
+  [class*='DashboardAssistant'] .overflow-y-auto {
+    max-height: 240px !important;
+  }
+
+  [class*='DashboardAssistant'] p {
+    font-size: 14px !important;
+  }
+
+  [class*='DashboardAssistant'] input {
+    font-size: 16px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+  }
+
+  [class*='DashboardAssistant'] button[type='submit'] {
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 26 · DASHBOARD PAGE — TOP CONTROL BAR
+   (preset switcher, time filters, search, notifications)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Top control bar: wrap */
+  div:has(.orbit-dashboard-controls),
+  div.flex.items-center.justify-between:has([class*='preset']) {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  /* Preset dropdown */
+  div:has([class*='selectedKey']) button,
+  div:has([class*='Dropdown']) button.flex.items-center {
+    height: 40px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    padding: 0 12px !important;
+  }
+
+  /* Time filter tabs: horizontal scroll */
+  div:has([class*='TIME_FILTERS']),
+  div.flex.gap-1:has(button[class*='text-xs']) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  div:has([class*='TIME_FILTERS'])::-webkit-scrollbar,
+  div.flex.gap-1:has(button[class*='text-xs'])::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Time filter buttons */
+  div.flex.gap-1:has(button[class*='text-xs']) button {
+    flex-shrink: 0 !important;
+    font-size: 10px !important;
+    padding: 5px 10px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Search input in dashboard header */
+  div:has(input[placeholder*='Search']) input {
+    font-size: 14px !important;
+    height: 40px !important;
+    border-radius: 12px !important;
+    min-width: 160px !important;
+  }
+
+  /* Notification bell + Profile buttons */
+  div.flex.items-center.gap-2 button:has(svg.h-4) {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Alert diagnostics panel */
+  div:has([class*='diagnostic']) {
+    font-size: 11px !important;
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 27 · DASHBOARD INNER PAGES
+   (Executions, Integrations, Invoices, Transactions, Settings)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Page heading row */
+  div:has(h1.text-2xl),
+  div:has(h1.text-3xl) {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  h1.text-2xl,
+  h1.text-3xl {
+    font-size: 20px !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* Action buttons row */
+  div.flex.items-center.gap-3:has(> button) {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Settings page: sidebar + content */
+  div:has([class*='Settings']) .grid.grid-cols-12 {
+    grid-template-columns: 1fr !important;
+  }
+
+  div:has([class*='Settings']) .col-span-3,
+  div:has([class*='Settings']) .col-span-4 {
+    grid-column: span 1 !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--orbit-border-subtle) !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 8px !important;
+  }
+
+  div:has([class*='Settings']) .col-span-9,
+  div:has([class*='Settings']) .col-span-8 {
+    grid-column: span 1 !important;
+  }
+
+  /* Settings tabs: horizontal scroll */
+  div:has([class*='Settings']) nav.flex {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 4px !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  div:has([class*='Settings']) nav.flex::-webkit-scrollbar {
+    display: none;
+  }
+
+  div:has([class*='Settings']) nav.flex button {
+    flex-shrink: 0 !important;
+    font-size: 10px !important;
+    height: 36px !important;
+    padding: 0 12px !important;
+    border-radius: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Settings form inputs */
+  div:has([class*='Settings']) input[type='text'],
+  div:has([class*='Settings']) input[type='email'],
+  div:has([class*='Settings']) select,
+  div:has([class*='Settings']) textarea {
+    font-size: 16px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Settings form grid */
+  div:has([class*='Settings']) .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Integrations page: card grid */
+  div:has([class*='Integrations']):not(section) .grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  div:has([class*='Integrations']):not(section) .grid > div {
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 28 · PRICING DETAILED PAGE + OTHER STANDALONE PAGES
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* PricingDetailed comparison table: horizontal scroll */
+  div:has([class*='PricingDetailed']) table {
+    min-width: 500px !important;
+  }
+
+  div:has([class*='PricingDetailed']) th,
+  div:has([class*='PricingDetailed']) td {
+    font-size: 12px !important;
+    padding: 10px 14px !important;
+  }
+
+  /* Coming soon page */
+  div:has([class*='ComingSoon']) h1 {
+    font-size: 28px !important;
+  }
+
+  div:has([class*='ComingSoon']) p {
+    font-size: 14px !important;
+  }
+
+  /* 404 page */
+  div:has([class*='NotFound']) h1 {
+    font-size: 60px !important;
+    line-height: 1 !important;
+  }
+
+  div:has([class*='NotFound']) h2 {
+    font-size: 20px !important;
+  }
+
+  /* Thank You page */
+  div:has([class*='ThankYou']) h1 {
+    font-size: 26px !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 29 · LEGAL PAGES (Privacy Policy, Terms of Service)
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  div:has([class*='Legal']) h1,
+  div:has([class*='PrivacyPolicy']) h1,
+  div:has([class*='TermsOfService']) h1 {
+    font-size: 22px !important;
+  }
+
+  div:has([class*='Legal']) h2,
+  div:has([class*='PrivacyPolicy']) h2,
+  div:has([class*='TermsOfService']) h2 {
+    font-size: 17px !important;
+    margin-top: 28px !important;
+  }
+
+  div:has([class*='Legal']) p,
+  div:has([class*='PrivacyPolicy']) p,
+  div:has([class*='TermsOfService']) p {
+    font-size: 13.5px !important;
+    line-height: 1.75 !important;
+  }
+}
+
+/* ===========================================================================
+   SECTION 30 · UTILITY — SMOOTH MOBILE INTERACTION POLISH
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  /* Framer motion: don't animate y-offset too large on mobile (overflow) */
+  [data-motion-initial-y='60'],
+  [style*='translateY(60'] {
+    --motion-initial-y: 20px !important;
+  }
+
+  /* Dialogs / modals: full-screen on mobile */
+  [role='dialog'] {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    border-radius: 24px 24px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    max-height: 90svh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Dropdown menus: full-width on narrow screens */
+  [data-radix-popper-content-wrapper] {
+    width: calc(100vw - 32px) !important;
+    max-width: 340px !important;
+  }
+
+  /* Tooltip: hide on mobile (no hover) */
+  [role='tooltip'] {
+    display: none !important;
+  }
+
+  /* Focus rings: visible and on-brand */
+  :focus-visible {
+    outline: 2px solid var(--orbit-accent-primary) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Prevent pinch-zoom breaking layouts */
+  meta[name='viewport'] {
+    content: 'width=device-width, initial-scale=1, maximum-scale=5' !important;
+  }
+
+  /* Safe area support for notched devices */
+  .orbit-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+
+  /* Smooth momentum scroll for any scrollable container */
+  [data-scroll-area],
+  .overflow-y-auto,
+  .overflow-x-auto,
+  .dashboard-scroll {
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Backdrop overlays: prevent body scroll */
+  [class*='backdrop'],
+  [class*='overlay'] {
+    overscroll-behavior: contain !important;
+  }
+
+  /* NumberTicker: ensure numbers don't overflow KPI cards */
+  [class*='NumberTicker'] {
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* Animated beam: hide on mobile (performance) */
+  [class*='AnimatedBeam'] svg {
+    display: none !important;
+  }
+
+  /* Moving border: reduce on mobile */
+  [class*='MovingBorder'] {
+    animation-duration: 8s !important;
+  }
+
+  /* Neon gradient cards: simplify shadow on mobile */
+  [class*='NeonGradientCard']::before,
+  [class*='NeonGradientCard']::after {
+    filter: blur(24px) !important;
+  }
+
+  /* Meteors: disable on mobile */
+  [class*='Meteor'],
+  [class*='meteor'] {
+    display: none !important;
+  }
+
+  /* DotPattern: reduce opacity on mobile */
+  [class*='DotPattern'] {
+    opacity: 0.5 !important;
+  }
+
+  /* GridPattern: reduce density */
+  [class*='GridPattern'] {
+    opacity: 0.4 !important;
+  }
+
+  /* Marquee: slightly slower on mobile for readability */
+  [class*='marquee'] {
+    --duration: 28s !important;
+  }
+
+  /* Spotlight: hide heavy GPU effects */
+  [class*='Spotlight'] {
+    display: none !important;
+  }
+}
+
+/* ===========================================================================
+   DARK MODE MOBILE OVERRIDES
+   Extra rules needed when dark mode is active on mobile
+   =========================================================================== */
+
+@media (max-width: 767px) {
+  .dark nav.fixed.top-0 {
+    background: rgba(11, 15, 20, 0.92) !important;
+  }
+
+  .dark header.sticky.top-0 {
+    background: rgba(11, 15, 25, 0.92) !important;
+  }
+
+  .dark footer {
+    background: #0b0f19 !important;
+  }
+
+  /* Dark mode carousel cards */
+  .dark .carousel-card {
+    background: #1c2333 !important;
+  }
+
+  /* Dark mode form inputs */
+  .dark input[type='text'],
+  .dark input[type='email'],
+  .dark input[type='password'],
+  .dark select,
+  .dark textarea {
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: var(--orbit-text-primary) !important;
+  }
+}
+
+/* ===========================================================================
+   HOW TO USE THIS FILE
+   ============================================================================
+
+   1. In src/main.tsx, add this import AFTER the style.css import:
+
+      import './style.css'
+      import './mobile.css'      ← add this line
+
+   2. For the bottom dashboard navigation (Section 21), add this component
+      to your AppShell.tsx inside the dashboard route render, after <main>:
+
+      // In AppShell.tsx, inside the dashboard route:
+      import { Link, useLocation } from 'react-router-dom';
+      import {
+        LayoutDashboard, Activity, Zap, DollarSign, Settings2
+      } from 'lucide-react';
+
+      // Inside the JSX, after </main>, before closing div:
+      <nav className="orbit-bottom-nav lg:hidden" aria-label="Bottom navigation">
+        <Link to="/dashboard"       aria-label="Dashboard">
+          <LayoutDashboard />  <span>Home</span>
+        </Link>
+        <Link to="/executions"      aria-label="Executions">
+          <Activity />         <span>Runs</span>
+        </Link>
+        <Link to="/integrations"    aria-label="Integrations">
+          <Zap />              <span>Apps</span>
+        </Link>
+        <Link to="/transactions"    aria-label="Transactions">
+          <DollarSign />       <span>Billing</span>
+        </Link>
+        <Link to="/settings"        aria-label="Settings">
+          <Settings2 />        <span>Settings</span>
+        </Link>
+      </nav>
+
+   3. The dashboard routes already detect mobile and hide the desktop sidebar.
+      The mobile drawer (hamburger) remains for users who need deeper navigation.
+
+   4. Add to your index.html <head> for proper viewport on notched phones:
+      <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+   5. For the DashboardShowcase section's mobile mockup (Section 5), the CSS
+      hides the sidebar inside the mockup and scales content down automatically.
+      If you want a phone-frame mockup instead, wrap the showcase section
+      content in a div with class="dashboard-mockup".
+
+   =========================================================================== */
+
+/* ===========================================================================
+   LANDING PAGE MOBILE TYPOGRAPHY SYSTEM
+   Ensures strict, visually balanced typography hierarchy from Features to FAQ.
+   =========================================================================== */
+@media (max-width: 767px) {
+  /* -------------------------------------------------------------------------
+     1. Main Section Headers & Badges (Consistent across all sections)
+     ------------------------------------------------------------------------- */
+  section#features h2,
+  section#benefits h2,
+  section#feature-deep-dive h2,
+  section#how-it-works h2,
+  section#faq h2,
+  section#integrations h2,
+  section#pricing h2 {
+    font-size: clamp(22px, 6vw, 26px) !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 8px !important;
+  }
+
+  section#features span.uppercase,
+  section#benefits span.uppercase,
+  section#feature-deep-dive span.uppercase,
+  section#how-it-works span.uppercase,
+  section#faq span.uppercase,
+  section#showcase span.uppercase,
+  section#integrations span.uppercase,
+  section#pricing span.uppercase {
+    font-size: 11px !important;
+    letter-spacing: 0.15em !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     2. Features Section (1-Column Grid)
+     ------------------------------------------------------------------------- */
+  section#features .grid h3 {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+  }
+
+  section#features .grid p {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     3. Benefits Section (2-Column Grid - Smaller texts to fit side-by-side)
+     ------------------------------------------------------------------------- */
+  section#benefits .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  section#benefits .grid > div {
+    min-height: 120px !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  section#benefits .grid h3 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+
+  section#benefits .grid p {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     4. Capabilities Section (FeatureDeepDive - 1-Column alternated grid)
+     ------------------------------------------------------------------------- */
+  #feature-deep-dive h3.feature-deep-dive-card-title {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 8px !important;
+  }
+
+  #feature-deep-dive h3.feature-deep-dive-card-title.text-\[32px\] {
+    font-size: 20px !important;
+  }
+
+  #feature-deep-dive p.feature-deep-dive-card-desc {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  /* Deep Dive Checklists / Bullets */
+  div.grid.grid-cols-1.items-center ul li,
+  div.grid.grid-cols-1.items-center div[class*='space-y'] > div {
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     5. How It Works Section (1-Column Steps)
+     ------------------------------------------------------------------------- */
+  #how-it-works p.mx-auto {
+    font-size: 14.5px !important;
+  }
+
+  #how-it-works h3.how-it-works-step-title {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4px !important;
+  }
+
+  #how-it-works p.how-it-works-step-body {
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  #how-it-works span.how-it-works-step-label {
+    font-size: 10px !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     6. FAQ Section (Accordions)
+     ------------------------------------------------------------------------- */
+  section#faq button h3,
+  section#faq button span,
+  section#faq [role='button'] {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+  }
+
+  section#faq [class*='answer'],
+  section#faq p.text-sm {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: var(--orbit-text-secondary) !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     7. Custom Additional Section Intro Descriptors (14.5px Mobile)
+     ------------------------------------------------------------------------- */
+  section#integrations p.max-w-xl,
+  section#pricing p.max-w-md,
+  section#showcase p.max-w-xl {
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Fix KPI grid layout to be 2 columns side-by-side in mockup */
+  .kpi-grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Specific overrides for showcase mockup buttons to prevent them from becoming huge */
+  .showcase-control-btn {
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 26px !important;
+    padding: 0 6px !important;
+    font-size: 7.5px !important;
+    border-radius: 6px !important;
+    letter-spacing: normal !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    gap: 2px !important;
+  }
+}

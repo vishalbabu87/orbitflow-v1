@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="OrbitFlow template documentation, setup guide, and customization instructions." />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>OrbitFlow Template Documentation</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #f8fafc;
+        --surface-strong: #eef2f7;
+        --border: rgba(15, 23, 42, 0.12);
+        --accent: #0ea5a4;
+        --accent-hover: #0c9594;
+        --text: #111827;
+        --text-muted: #4b5563;
+        --code-bg: #111827;
+        --code-text: #e5e7eb;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #090d12;
+          --surface: #0e131f;
+          --surface-strong: #111827;
+          --border: rgba(255, 255, 255, 0.1);
+          --text: #f3f4f6;
+          --text-muted: #a3aab8;
+          --code-bg: #05070b;
+          --code-text: #f3f4f6;
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a { color: var(--accent); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+      a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+      .shell {
+        display: grid;
+        grid-template-columns: 290px minmax(0, 1fr);
+        gap: 40px;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 32px;
+      }
+
+      aside {
+        position: sticky;
+        top: 24px;
+        height: calc(100vh - 48px);
+        align-self: start;
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: var(--surface);
+        padding: 22px;
+      }
+
+      main { min-width: 0; }
+
+      .brand { margin-bottom: 22px; }
+      .eyebrow {
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      h1 { margin: 8px 0 16px; font-size: clamp(34px, 5vw, 56px); line-height: 1.1; letter-spacing: -0.04em; }
+      h2 { margin: 40px 0 16px; font-size: 28px; letter-spacing: -0.03em; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+      h3 { margin: 28px 0 8px; font-size: 18px; color: var(--text); }
+      p, li { color: var(--text-muted); }
+      ul { padding-left: 20px; }
+      li { margin-bottom: 8px; }
+
+      nav { display: grid; gap: 6px; }
+      nav a {
+        border-radius: 12px;
+        color: var(--text-muted);
+        padding: 9px 12px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+      nav a.active, nav a:hover {
+        background: rgba(14, 165, 164, 0.12);
+        color: var(--accent);
+      }
+
+      section {
+        margin-bottom: 32px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: var(--surface);
+        padding: 40px;
+      }
+
+      .hero {
+        background: radial-gradient(circle at top left, rgba(14, 165, 164, 0.15), transparent 40%),
+                    radial-gradient(circle at bottom right, rgba(79, 70, 229, 0.1), transparent 40%),
+                    var(--surface);
+      }
+
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+      .card { border: 1px solid var(--border); border-radius: 18px; background: var(--surface-strong); padding: 20px; }
+      .card strong { display: block; margin-bottom: 8px; color: var(--text); font-size: 16px; }
+      .card p { margin: 0; font-size: 14px; }
+
+      code {
+        border-radius: 6px;
+        background: rgba(14, 165, 164, 0.12);
+        color: var(--accent);
+        padding: 3px 6px;
+        font-size: 0.9em;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+
+      pre {
+        overflow-x: auto;
+        border-radius: 16px;
+        background: var(--code-bg);
+        color: var(--code-text);
+        padding: 20px;
+        margin: 16px 0;
+        border: 1px solid var(--border);
+      }
+      pre code { background: transparent; color: inherit; padding: 0; }
+
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+      th, td { border-bottom: 1px solid var(--border); padding: 12px 16px; text-align: left; vertical-align: top; }
+      th { color: var(--text); font-weight: 600; background: var(--surface-strong); }
+      td code { font-size: 13px; }
+
+      .callout {
+        border-left: 4px solid var(--accent);
+        border-radius: 14px;
+        background: rgba(14, 165, 164, 0.08);
+        padding: 16px 20px;
+        margin: 20px 0;
+      }
+      .callout strong { display: block; color: var(--accent); margin-bottom: 4px; }
+
+      .callout.warning {
+        border-left-color: #f59e0b;
+        background: rgba(245, 158, 11, 0.08);
+      }
+      .callout.warning strong { color: #f59e0b; }
+
+      @media (max-width: 880px) {
+        .shell { grid-template-columns: 1fr; padding: 16px; }
+        aside { position: static; height: auto; margin-bottom: 24px; }
+        section { padding: 24px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside>
+        <div class="brand">
+          <div class="eyebrow">OrbitFlow v1.0.0</div>
+          <strong>Template Documentation</strong>
+        </div>
+        <nav aria-label="Documentation navigation">
+          <a href="#welcome" class="active">1. Welcome</a>
+          <a href="#requirements">2. System Requirements</a>
+          <a href="#quickstart">3. Quick Start</a>
+          <a href="#structure">4. File Structure</a>
+          <a href="#routes">5. All Pages & Routes</a>
+          <a href="#customization">6. Customization Guide</a>
+          <a href="#components">7. Component Reference</a>
+          <a href="#backend">8. Backend Integration</a>
+          <a href="#deployment">9. Deployment</a>
+          <a href="#credits">10. Credits & Licenses</a>
+          <a href="#support">11. Support Info</a>
+          <a href="#changelog">12. Changelog</a>
+        </nav>
+      </aside>
+
+      <main>
+        <section id="welcome" class="hero">
+          <div class="eyebrow">Thank you for purchasing</div>
+          <h1>OrbitFlow</h1>
+      <h2>1. Welcome</h2>
+          <p>
+            OrbitFlow is a premium React SaaS template engineered for modern startups. Built with <strong>React 18, TypeScript, Tailwind CSS v4, and Vite</strong>, it provides a production-ready foundation for your next web application.
+          </p>
+          <div class="callout">
+            <strong>Frontend Template Notice</strong>
+            This is a frontend UI template. Authentication, billing logic, forms, and dashboard data are visually simulated for demonstration purposes. You will need to connect your own backend (Node.js, Supabase, Firebase, Laravel, etc.) to make it fully functional.
+          </div>
+        </section>
+
+        <section id="requirements">
+          <h2>2. System Requirements</h2>
+          <p>Before you begin, ensure your local development environment meets the following requirements:</p>
+          <ul>
+            <li><strong>Node.js:</strong> Version 20.0 or higher (LTS recommended).</li>
+            <li><strong>Package Manager:</strong> npm (included with Node.js), yarn, or pnpm.</li>
+            <li><strong>Code Editor:</strong> Visual Studio Code (recommended) with Prettier and Tailwind CSS IntelliSense extensions.</li>
+            <li><strong>Browser:</strong> Modern versions of Chrome, Firefox, Safari, or Edge.</li>
+          </ul>
+        </section>
+
+        <section id="quickstart">
+          <h2>3. Quick Start</h2>
+          <p>Follow these steps to get the template running locally on your machine.</p>
+          
+          <h3>Step 1: Extract the archive</h3>
+          <p>Extract the <code>zip file</code> to your desired local directory.</p>
+
+          <h3>Step 2: Install dependencies</h3>
+          <p>Open your terminal, navigate to the extracted project folder, and run:</p>
+          <pre><code>npm install</code></pre>
+
+          <h3>Step 3: Start the development server</h3>
+          <p>Run the Vite development server with hot-module replacement (HMR):</p>
+          <pre><code>npm run dev</code></pre>
+          <p>Your browser should automatically open to <code>http://localhost:5173</code>.</p>
+
+          <h3>Step 4: Build for Production</h3>
+          <p>When you are ready to deploy, create an optimized production build:</p>
+          <pre><code>npm run build</code></pre>
+          <p>This generates a <code>dist/</code> folder containing all minified static assets.</p>
+        </section>
+
+        <section id="structure">
+          <h2>4. File Structure</h2>
+          <p>Understanding the project architecture is key to customizing OrbitFlow.</p>
+          <pre><code>orbitflow/
+├── public/                 # Static assets (favicon, placeholders, robots.txt)
+├── src/
+│   ├── assets/             # Local SVG, CSS, and media files
+│   ├── components/
+│   │   ├── dashboard/      # Internal app widgets, tables, and charts
+│   │   ├── hero/           # Hero section variants for marketing pages
+│   │   ├── layout/         # AppShell, TopNav, Footer, MobileSidebar
+│   │   ├── ui/             # Reusable base components (Buttons, Inputs, Dialogs)
+│   │   └── vertex/         # Marketing sections (Pricing, Features, Testimonials)
+│   ├── constants/          # Static data (Dashboard nav menus, mock data)
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions (cn for Tailwind class merging)
+│   ├── pages/              # Route-level views (Home, Dashboard, Login, etc.)
+│   ├── App.tsx             # Main React Router configuration
+│   ├── main.tsx            # React application entry point
+│   └── style.css           # Global CSS and Tailwind design tokens
+├── tailwind.config.js      # Tailwind theme configuration
+├── tsconfig.json           # TypeScript configuration
+└── vite.config.ts          # Vite bundler configuration</code></pre>
+        </section>
+
+        <section id="routes">
+          <h2>5. All Pages & Routes</h2>
+          <p>OrbitFlow includes over 43 pre-built pages managed via React Router.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Route Path</th>
+                <th>File Location</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr><td><code>/</code></td><td>Home / Landing</td></tr>
+          <tr><td><code>/dashboard</code></td><td>Main Dashboard</td></tr>
+          <tr><td><code>/analytics</code></td><td>Analytics Dashboard</td></tr>
+                                                            <tr><td><code>/team</code></td><td>Team Directory</td></tr>
+          <tr><td><code>/settings</code></td><td>User Settings</td></tr>
+                    <tr><td><code>/help</code></td><td>Help Center</td></tr>
+          <tr><td><code>/executions</code></td><td>Workflow Executions</td></tr>
+          <tr><td><code>/transactions</code></td><td>Transactions</td></tr>
+          <tr><td><code>/invoices</code></td><td>Invoices</td></tr>
+          <tr><td><code>/developers</code></td><td>Developers Docs</td></tr>
+          <tr><td><code>/ui-kit</code></td><td>UI Component Kit</td></tr>
+          <tr><td><code>/blank</code></td><td>Blank Starter Page</td></tr>
+          <tr><td><code>/coming-soon</code></td><td>Coming Soon</td></tr>
+          <tr><td><code>/thank-you</code></td><td>Thank You Page</td></tr>
+          <tr><td><code>/schedule-demo</code></td><td>Schedule Demo</td></tr>
+          <tr><td><code>/pricing-detailed</code></td><td>Detailed Pricing</td></tr>
+          <tr><td><code>/terms-of-service</code></td><td>Terms of Service</td></tr>
+          <tr><td><code>/auth/login</code></td><td>Login</td></tr>
+          <tr><td><code>/auth/register</code></td><td>Register</td></tr>
+          <tr><td><code>/auth/forgot-password</code></td><td>Password Recovery</td></tr>
+          <tr><td><code>/auth/reset-password</code></td><td>Password Reset</td></tr>
+                                                  <tr><td><code>/auth</code></td><td>Auth Base Redirect</td></tr>
+</tbody>
+          </table>
+        </section>
+
+        <section id="customization">
+          <h2>6. Customization Guide</h2>
+          
+          <h3>Brand Colors & CSS Variables</h3>
+          <p>OrbitFlow uses Tailwind CSS combined with native CSS variables for easy theming. Open <code>src/style.css</code> to modify the core brand colors:</p>
+          <pre><code>:root {
+  /* Change this to your primary brand color (currently Teal) */
+  --orbit-accent-primary: #0ea5a4;
+  
+  /* Background colors */
+  --orbit-base: #090d12;
+  --orbit-surface: #0e131f;
+}</code></pre>
+
+          <h3>Changing the Logo</h3>
+          <p>The logo is a standalone component. To replace it with your own SVG or Image:</p>
+          <ol>
+            <li>Open <code>src/components/ui/OrbitLogo.tsx</code></li>
+            <li>Replace the existing SVG path inside the component with your own vector data, or replace the entire return statement with an <code>&lt;img src="/your-logo.svg" /&gt;</code> tag.</li>
+          </ol>
+
+          <h3>Updating SEO Metadata</h3>
+          <p>Don't forget to update the global metadata before launching:</p>
+          <ul>
+            <li><strong>index.html:</strong> Update the <code>&lt;title&gt;</code>, description, and OpenGraph tags.</li>
+            <li><strong>public/robots.txt:</strong> Update the sitemap URL domain.</li>
+            <li><strong>public/favicon.ico:</strong> Replace with your own favicon.</li>
+          </ul>
+
+          <div class="callout warning">
+            <strong>Placeholder Images</strong>
+            The template uses generic placeholder avatars and images to comply with marketplace licensing. You must replace these with your own licensed photography in the <code>src/</code> directory before publishing.
+          </div>
+        </section>
+
+        <section id="components">
+          <h2>7. Component Reference</h2>
+          <p>OrbitFlow includes dozens of accessible, highly-polished UI primitives located in <code>src/components/ui/</code>. Most interactive components are built on top of <strong>Radix UI</strong> primitives.</p>
+
+          <div class="grid">
+            <div class="card">
+              <strong>Button</strong>
+              <p>Supports <code>variant</code> (default, outline, ghost, link, destructive) and <code>size</code> (default, sm, lg, icon). Uses Tailwind merge for safe class overriding.</p>
+            </div>
+            <div class="card">
+              <strong>Dialog / Modal</strong>
+              <p>Accessible modal dialog built with Radix. Use <code>DialogTrigger</code> and <code>DialogContent</code> to create popups without managing z-index state.</p>
+            </div>
+            <div class="card">
+              <strong>DropdownMenu</strong>
+              <p>Supports nested menus, checkboxes, and keyboard navigation. Perfect for user profile menus and table action dropdowns.</p>
+            </div>
+            <div class="card">
+              <strong>Tabs</strong>
+              <p>Accessible tabbed interfaces used extensively in the Settings and Analytics pages.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="backend">
+          <h2>8. Backend Integration</h2>
+      <div class="alert">
+        <strong>Google Maps Embed:</strong> To use the Google Maps component in production, you must generate your own API key and replace the placeholder in the component code. See <a href="https://developers.google.com/maps/documentation/embed/get-api-key">Google Maps Documentation</a>.
+      </div>
+          <p>To turn this frontend template into a working application, you will need to integrate APIs.</p>
+
+          <h3>Authentication</h3>
+          <p>The auth pages (<code>Login.tsx</code>, <code>Register.tsx</code>) currently use a simulated `setTimeout` to mimic network latency, then write a fake token to <code>localStorage</code> before redirecting to the dashboard.</p>
+          <p><strong>To connect real auth (e.g., Supabase, Firebase, NextAuth):</strong></p>
+          <ol>
+            <li>Locate the <code>handleSubmit</code> function in the respective auth page.</li>
+            <li>Remove the `setTimeout` and `localStorage` logic.</li>
+            <li>Replace it with your authentication provider's login/signup method.</li>
+            <li>Implement a global Auth Context or state manager (like Zustand/Redux) to protect the <code>/dashboard</code> routes.</li>
+          </ol>
+
+          <h3>Dashboard Data</h3>
+          <p>The charts and tables in the dashboard read from static mock arrays located in <code>src/constants/</code> and <code>src/data/</code>. Use standard <code>useEffect</code> hooks or a data fetching library like <strong>React Query</strong> or <strong>SWR</strong> to fetch JSON from your backend API and populate these components dynamically.</p>
+        </section>
+
+        <section id="deployment">
+          <h2>9. Deployment</h2>
+          <p>Because OrbitFlow is a Vite-based Single Page Application (SPA), deployment is fast and inexpensive.</p>
+
+          <h3>Netlify / Vercel</h3>
+          <ol>
+            <li>Push your repository to GitHub, GitLab, or Bitbucket.</li>
+            <li>Import the project into Netlify or Vercel.</li>
+            <li>The platform should automatically detect Vite.</li>
+            <li><strong>Build Command:</strong> <code>npm run build</code></li>
+            <li><strong>Output Directory:</strong> <code>dist</code></li>
+          </ol>
+
+          <h3>Manual Deployment (cPanel / Static Hosting)</h3>
+          <ol>
+            <li>Run <code>npm run build</code> locally.</li>
+            <li>Upload the contents of the generated <code>dist/</code> folder to your web server's <code>public_html</code> directory.</li>
+            <li>Ensure your server is configured to route all 404 requests back to <code>index.html</code> (using an <code>.htaccess</code> fallback for Apache, or <code>try_files</code> for Nginx) to support React Router's client-side navigation.</li>
+          </ol>
+        </section>
+
+        <section id="credits">
+          <h2>10. Credits & Licenses</h2>
+          <p>OrbitFlow is built upon excellent open-source technologies. We are grateful to the creators of:</p>
+          <ul>
+            <li><strong>React</strong> (MIT License) - <a href="https://react.dev/" target="_blank">react.dev</a></li>
+            <li><strong>Vite</strong> (MIT License) - <a href="https://vitejs.dev/" target="_blank">vitejs.dev</a></li>
+            <li><strong>Tailwind CSS</strong> (MIT License) - <a href="https://tailwindcss.com/" target="_blank">tailwindcss.com</a></li>
+            <li><strong>Framer Motion</strong> (MIT License) - <a href="https://motion.dev/" target="_blank">motion.dev</a></li>
+            <li><strong>Radix UI</strong> (MIT License) - <a href="https://www.radix-ui.com/" target="_blank">radix-ui.com</a></li>
+            <li><strong>Lucide Icons</strong> (ISC License) - <a href="https://lucide.dev/" target="_blank">lucide.dev</a></li>
+            <li><strong>Recharts</strong> (MIT License) - <a href="https://recharts.org/" target="_blank">recharts.org</a></li>
+          </ul>
+          <p>See <code>CREDITS.txt</code> for full license disclosures.</p>
+        </section>
+
+        <section id="support">
+          <h2>11. Support Info</h2>
+          <p>If you encounter a bug, have a feature request, or need help understanding the template structure, we are here to help!</p>
+          <div class="callout">
+            <strong>Contact Support</strong><br>
+            Please reach out via our <a href="mailto:support@orbitflow.design">Support Email</a>. Support covers bugs, installation issues, and template structural guidance. It does not cover custom feature development or backend integration writing.
+          </div>
+        </section>
+
+        <section id="changelog">
+          <h2>12. Changelog</h2>
+          <div class="card">
+            <strong>Version 1.0.0</strong>
+            <p>Initial Release</p>
+            <ul>
+              <li>40+ High-conversion marketing sections</li>
+              <li>Complete SaaS dashboard shell</li>
+              <li>Authentication flows</li>
+              <li>100% responsive and accessible</li>
+              <li>Light and dark mode foundations</li>
+            </ul>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <script>
+      const links = Array.from(document.querySelectorAll("nav a"));
+      const sections = links
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((link) => {
+              link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
+            });
+          });
+        },
+        { rootMargin: "-30% 0px -60% 0px", threshold: 0.01 }
+      );
+
+      sections.forEach((section) => observer.observe(section));
+    </script>
+  </body>
+</html>

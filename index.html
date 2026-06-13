@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>OrbitFlow - AI-Powered Workflow Automation Platform</title>
+    <meta name="description" content="OrbitFlow helps teams automate repetitive work, connect apps, and manage workflows using simple AI-powered tools." />
+
+    <!-- Open Graph / Social Sharing (Note: Replace 'https://orbitflow.io/' with your deployed domain after publishing) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://orbitflow.io/" />
+    <meta property="og:title" content="OrbitFlow - AI-Powered Workflow Automation Platform" />
+    <meta property="og:description" content="OrbitFlow helps teams automate repetitive work, connect apps, and manage workflows using simple AI-powered tools." />
+    <!-- Absolute URL required for social scrapers, but relative used for ThemeForest template -->
+    <meta property="og:image" content="/dashboard-mockup.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OrbitFlow - AI-Powered Workflow Automation Platform" />
+    <meta name="twitter:description" content="OrbitFlow helps teams automate repetitive work, connect apps, and manage workflows using simple AI-powered tools." />
+    <!-- Absolute URL required for social scrapers, but relative used for ThemeForest template -->
+    <meta name="twitter:image" content="/dashboard-mockup.webp" />
+
+    <!-- Theme Color (mobile browser chrome color) -->
+    <meta name="theme-color" content="#0EA5A4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A0F1E" media="(prefers-color-scheme: dark)" />
+
+    <!-- Canonical URL - replace with actual deployed domain -->
+    <link rel="canonical" href="https://orbitflow.io/" />
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Lora:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+      // Inline script to prevent theme flashing on load (respects prefers-color-scheme)
+      (function() {
+        const storedTheme = localStorage.getItem('orbitflow-theme');
+        const theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+

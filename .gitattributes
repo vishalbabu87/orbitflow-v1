@@ -1,0 +1,10 @@
+# Enforce LF line endings for all text files
+* text=auto eol=lf
+
+# Explicitly declare binary files that should not be normalized
+*.png binary
+*.jpg binary
+*.webp binary
+*.svg text
+*.ico binary
+*.zip binary
