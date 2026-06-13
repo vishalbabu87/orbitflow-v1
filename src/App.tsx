@@ -6,14 +6,7 @@ import { AppShell } from './components/layout/AppShell';
 import { usePageMeta } from './hooks/usePageMeta';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 
-declare global {
-  interface Window {
-    lenis?: {
-      scrollTo: (target: number, options: { immediate: boolean }) => void;
-      resize: () => void;
-    };
-  }
-}
+
 
 const Home = React.lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const HomeChatbot = React.lazy(() =>
@@ -81,11 +74,12 @@ function ScrollToTop() {
     }
     
     // Check for lenis loaded asynchronously to prevent scroll restoration issues
+    const lenisWindow = window as unknown as { lenis?: { scrollTo: (target: number, options: { immediate: boolean }) => void; resize: () => void; } };
     let checks = 0;
     const interval = setInterval(() => {
-      if (window.lenis) {
-        window.lenis.scrollTo(0, { immediate: true });
-        window.lenis.resize();
+      if (lenisWindow.lenis) {
+        lenisWindow.lenis.scrollTo(0, { immediate: true });
+        lenisWindow.lenis.resize();
         clearInterval(interval);
       }
       checks++;
@@ -98,8 +92,8 @@ function ScrollToTop() {
         document.documentElement.scrollTo(0, 0);
         document.body.scrollTo(0, 0);
       }
-      if (window.lenis) {
-        window.lenis.resize();
+      if (lenisWindow.lenis) {
+        lenisWindow.lenis.resize();
       }
     }, 100);
 
