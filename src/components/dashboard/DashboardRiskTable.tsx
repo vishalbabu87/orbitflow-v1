@@ -36,7 +36,7 @@ export const DashboardRiskTable: React.FC<DashboardRiskTableProps> = ({ onAction
           onAction={onAction || (() => {})}
         />
       ) : (
-        <div ref={scrollRef as any} className="table-scroll-wrapper -mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
+        <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="table-scroll-wrapper -mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
           <div className="flex flex-row gap-4 pb-4">
             {(Object.keys(crmPipeline) as Array<keyof typeof crmPipeline>).map((column) => (
               <div

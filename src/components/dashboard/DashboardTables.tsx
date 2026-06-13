@@ -301,7 +301,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
               onAction={() => showToast('Create Workflow')}
             />
           ) : (
-            <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+            <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
               <table className="w-full min-w-[600px] border-collapse text-left">
                 <caption className="sr-only">Active automation workflows monitor</caption>
                 <thead>
@@ -483,7 +483,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
             onAction={() => showToast('Add Deal')}
           />
         ) : (
-          <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+          <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
             <table className="w-full min-w-[600px] border-collapse text-left">
               <caption className="sr-only">Active pipeline deals table</caption>
               <thead>
@@ -605,7 +605,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
             onAction={() => showToast('Add Task')}
           />
         ) : (
-          <div ref={scrollRef as any} className="flex flex-row gap-4 overflow-x-auto pb-4 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+          <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="flex flex-row gap-4 overflow-x-auto pb-4 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
             {(Object.keys(projectBoard) as Array<keyof typeof projectBoard>).map((column) => (
               <div
                 key={column}
@@ -685,7 +685,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
             onAction={() => showToast('Connect Source')}
           />
         ) : (
-          <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+          <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
             <table className="w-full min-w-[700px] border-collapse text-left">
               <caption className="sr-only">Connected data sources replication pipelines</caption>
               <thead>
@@ -886,7 +886,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
             onAction={() => showToast('Create Campaign')}
           />
         ) : (
-          <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+          <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
             <table className="w-full min-w-[700px] border-collapse text-left">
               <caption className="sr-only">
                 Email marketing campaigns performance statistics
@@ -998,7 +998,7 @@ export const DashboardTables: React.FC<DashboardTablesProps> = ({ selectedKey })
             onAction={() => showToast('Add Gateway')}
           />
         ) : (
-          <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
+          <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-track]:bg-gray-100/50 dark:[&::-webkit-scrollbar-track]:bg-gray-800/50">
             <table className="w-full min-w-[600px] border-collapse text-left">
               <caption className="sr-only">Mobile push notification gateways statistics</caption>
               <thead>

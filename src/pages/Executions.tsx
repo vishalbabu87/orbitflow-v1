@@ -154,7 +154,7 @@ export default function Executions() {
 
       {/* Data Table */}
       <div className="w-full overflow-hidden rounded-xl border border-[var(--orbit-border-subtle)] bg-[var(--orbit-surface)] md:rounded-2xl dark:border-gray-800 dark:bg-gray-900">
-        <div ref={scrollRef as any} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-[var(--orbit-border-hover)] hover:[&::-webkit-scrollbar-thumb]:bg-[var(--orbit-text-muted)] [&::-webkit-scrollbar-track]:bg-[var(--orbit-elevated)]">
+        <div ref={scrollRef as React.LegacyRef<HTMLDivElement>} className="overflow-x-auto pb-2 sm:pb-0 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-[var(--orbit-border-hover)] hover:[&::-webkit-scrollbar-thumb]:bg-[var(--orbit-text-muted)] [&::-webkit-scrollbar-track]:bg-[var(--orbit-elevated)]">
           <table className="w-full min-w-[600px] text-left text-xs whitespace-nowrap">
             <thead className="border-b border-[var(--orbit-border-subtle)] bg-[var(--orbit-elevated)] font-mono text-xs font-bold tracking-widest text-[var(--orbit-text-muted)] uppercase sm:text-xs dark:border-gray-800 dark:bg-gray-800/50 dark:text-[var(--orbit-text-secondary)]">
               <tr>
